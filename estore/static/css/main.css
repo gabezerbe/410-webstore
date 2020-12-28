@@ -1,0 +1,16 @@
+.product-image{
+    max-width: 640;
+    max-height: 360;
+}
+
+.form-field{
+    width: 250px;
+    display: inline-block;
+    padding: 5px;
+    margin: 5px;
+}
+
+.hidden{
+    visibility: hidden;
+	display: none!important;
+}

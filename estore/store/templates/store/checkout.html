@@ -1,0 +1,146 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+
+<div class="row">
+    <div class="col">
+        <div class="card" id="form-wrapper">
+            <div class="card-body">
+                <form id="form">
+                    <div id="user-info">
+                        <div class="form-field">
+                            <input required class="form-control" type="text" name="name" placeholder="Name...">
+                        </div>
+                        <div class="form-field">
+                            <input required class="form-control" type="text" name="email" placeholder="email@example.com">
+                        </div>
+                    </div>
+
+                    <div id="shipping info">
+                        <hr>
+                        <p> Shipping Information:</p>
+                        <hr>
+                        <div class="form-field">
+                            <input class="form-control" type="text" name="address" placeholder="Address..">
+                        </div>
+                        <div class="form-field">
+                            <input class="form-control" type="text" name="city" placeholder="City..">
+                        </div>
+                        <div class="form-field">
+                            <input class="form-control" type="text" name="state" placeholder="State..">
+                        </div>
+                        <div class="form-field">
+                            <input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
+                        </div>
+                    </div>
+
+                    <hr>
+                    <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
+                </form>
+                <hr>
+                <div class="hidden" id="payment-info">
+                    <small>Payment Option</small>
+                    <button class ="btn btn-success" id="make-payment">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="row">
+            <div class="card w-50">
+                <div class="card-header bg-dark">
+                    <div class="row w-100">
+                        <div class="col-sm"></div>
+                        <div class="col-sm text-light"><strong>Item</strong></div>
+                        <div class="col-sm text-light"><strong>Price</strong></div>
+                        <div class="col-sm text-light"><strong>Quantity</strong></div>
+                        <div class="col-sm text-light"><strong>Total</strong></div>
+                    </div>
+                </div>
+                {% for item in items %}
+                <div class="row card-body">
+                    <div class="col-sm">
+                        <image src="{{item.product.imageURL}}" class="img-fluid"></image>
+                    </div>
+                    <div class="col-sm"><strong>{{item.product.name}}</strong></div>
+                    <div class="col-sm"><strong>${{item.product.price|floatformat:2}}</strong></div>
+                    <div class="col-sm"><strong>{{item.quantity}}</strong></div>
+                    <div class="col-sm"><strong>${{item.get_total}}</strong></div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="card w-50">
+                <div class="card-header bg-dark">
+                    <div class="text-light"><h3>Order Total</h3></div>
+                </div>
+                <div class="card-body">
+                    <h5>Items: {{order.get_cart_items}}</h5>
+                    <h5>Total: ${{order.get_cart_total|floatformat:2}}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var shipping= '{{order.shipping}}'
+    var total='{{order.get_cart_total|floatformat:2}}'
+    var form = document.getElementById('form')
+
+    form.addEventListener('submit', function(e){
+        e.preventDefault()
+        console.log("form submitted")
+        document.getElementById('form-button').classList.add('hidden')
+        document.getElementById('payment-info').classList.remove('hidden')
+
+    })
+
+    document.getElementById('make-payment').addEventListener('click', function(e){
+        submitFormData()
+    })
+
+    function submitFormData(){
+        console.log("Payment Confirmed")
+
+        var userFormData = {
+            'name':null,
+            'email':null,
+            'total':total,
+        }
+        var shippingInfo = {
+            'address':null,
+            'city':null,
+            'state':null,
+            'zipcode':null
+        }
+        shippingInfo.address = form.address.value
+        shippingInfo.city = form.city.value
+        shippingInfo.state = form.state.value
+        shippingInfo.zipcode = form.zipcode.value
+
+        userFormData.name = form.name.value
+        userFormData.email = form.email.value
+
+        var url= '/processOrder/'
+        fetch(url,{
+            method: 'POST',
+            headers:{
+                'Content-Type':'application/json',
+                'X-CSRFToken':csrftoken,
+            },
+
+            body:JSON.stringify({'form':userFormData, 'shipping':shippingInfo})
+        })
+        .then((response) => response.json())
+        .then((data) => {
+        console.log('Order Submitted', data);
+        alert('Transaction Complete');
+        window.location.href="{% url 'store' %}"})
+    }
+</script>
+{% endblock content %}

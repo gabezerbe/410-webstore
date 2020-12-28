@@ -1,0 +1,50 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="card w-100">
+        <div class="card-header bg-dark">
+            <div class="col-sm">
+                <a class="btn btn-outline-light btn-small" href="{% url 'store' %}">&#x2190; Continue Shopping</a>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table w-100">
+                <tr>
+                    <th>Items: <strong>{{order.get_cart_items}} </strong></th>
+                    <th>Total: <strong>${{order.get_cart_total}}</strong></th>
+                    <th>
+                        <a class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
+                    </th>
+                </tr>
+            </table>
+       </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="card">
+        <div class="card-header bg-dark">
+            <div class="row w-100">
+                <div class="col-sm"></div>
+                <div class="col-sm text-light"><strong>Item</strong></div>
+                <div class="col-sm text-light"><strong>Price</strong></div>
+                <div class="col-sm text-light"><strong>Quantity</strong></div>
+                <div class="col-sm text-light"><strong>Total</strong></div>
+            </div>
+        </div>
+        {% for item in items %}
+        <div class="row card-body">
+            <div class="col-sm">
+                <image src="{{item.product.imageURL}}" class="img-fluid"></image>
+            </div>
+            <div class="col-sm"><strong>{{item.product.name}}</strong></div>
+            <div class="col-sm"><strong>${{item.product.price|floatformat:2}}</strong></div>
+            <div class="col-sm"><strong>{{item.quantity}}</strong></div>
+            <div class="col-sm"><strong>${{item.get_total}}</strong></div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

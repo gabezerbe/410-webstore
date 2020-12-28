@@ -1,0 +1,17 @@
+{% extends 'store/main.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class ="container">
+    <h1>Login</h1>
+    <form class="site-form" action="{% url 'login' %}" method = "post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Login">
+    </form>
+
+    <p>Don't have an account? <a href="{% url 'register' %}" method = "post">Register Here.</a></p>
+</div>
+
+{% endblock content %}

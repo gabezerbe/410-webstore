@@ -1,0 +1,37 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container"></div>
+    <div class="row">
+        <div class="col-lg-8">
+            <image src="{{product.imageURL}}" class="img-fluid">
+        </div> 
+        <div class = "col-sm-4">
+            <div class="card">
+                <div class="card-header">
+                    <h3>{{product.name}}</h3>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-subtitle mb-2 text-muted">ID: #{{product.product_id}}</h5>
+                    
+                    <hr>
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-primary">${{product.price}}</button>
+                        </div>
+                        <div class="col">
+                            <button data-product={{product.product_id}} data-action="add" class="btn btn-danger update-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+           
+           
+            
+        </div>
+    </div>
+</div>
+
+{% endblock content%}
