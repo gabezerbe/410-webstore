@@ -1,6 +1,4 @@
 # 410-webstore
-CSC410-Webstore Project
+Alma College CSC 410: Database Management Final Project
 
-This was a project for my Computer Science 410 class focussing on manipulting/creating Databases to be used in a web based app.
-
-We were tasked with creating a model webstore, with a user signup/login system that would remember details during checkout, along with a CRUD interface for Employees/Site Admins.
+The goal of this project was to design a webstore with, with user account creation features, saved checkout information for created user accounts, and a CRUD interface for website employees to allow for live additions/removals/editing of products on the page.
